@@ -6,9 +6,9 @@ import Button from "../common/button/Button";
 import Input from "../common/input/Input";
 import { CreateCustomWorkoutPlanContext } from "../../contexts/CreateCustomWorkoutContext";
 
-const ExerciseCard = ({exerciseName, onChange, exerciseIndex, workoutIndex, isOpened, openCardClick}) => {
+const ExerciseCard = ({exercise, onChange, exerciseIndex, workoutIndex, isOpened, openCardClick}) => {
   const {workoutPlan, dispatch} = useContext(CreateCustomWorkoutPlanContext);
-  const exercise = workoutPlan.workouts[workoutIndex].exercises[exerciseIndex];
+  // const exercise = workoutPlan.workouts[workoutIndex].exercises[exerciseIndex];
   const sets = exercise.sets
 
   function addSet() {
@@ -27,7 +27,7 @@ const ExerciseCard = ({exerciseName, onChange, exerciseIndex, workoutIndex, isOp
           labelText="Exercise Name"
           labelName="exerciseName"
           inputType="text"
-          value={exerciseName}
+          value={exercise.name}
           isRequired={true}
           // onChange={(e) => onChange(e, index)}
         />

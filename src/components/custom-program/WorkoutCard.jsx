@@ -24,14 +24,6 @@ const WorkoutCard = ({ arrayIndex, isOpened }) => {
     setOpenedExerciseCardIndex(index);
   }
 
-  // function onChangeExercise(e, index) {
-  //   const field = e.target.name;
-  //   const value = e.target.value;
-  //   const exerciseToChange = exercises[index];
-  //   exerciseToChange[field] = value;
-  //   setExercises((oldExercises) => [...oldExercises, exerciseToChange]);
-  // }
-
   function onChangeWorkoutName(e){
     e.preventDefault();
     dispatch({type: 'changeWorkoutName', payload: {index: arrayIndex, name: e.target.value}});
@@ -55,9 +47,9 @@ const WorkoutCard = ({ arrayIndex, isOpened }) => {
       {exercises.map((exercise, index) => (
         <ExerciseCard
           // onChange={onChangeExercise}
+          exercise={exercise}
           workoutIndex={arrayIndex}
           index={index}
-          exerciseName={exercise.name}
           isOpened={index == openedExercisesCardIndex}
           openCardClick={(e) => openExerciseCard(e, index)}
           key={index}
