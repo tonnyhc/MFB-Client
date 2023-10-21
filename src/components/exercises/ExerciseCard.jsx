@@ -1,36 +1,120 @@
-import React, { useContext  } from "react";
+import React, { useContext, useState } from "react";
 
 import { HiPlusCircle, HiMinusCircle } from "react-icons/hi2";
 
 import Button from "../common/button/Button";
 import Input from "../common/input/Input";
 import { CreateCustomWorkoutPlanContext } from "../../contexts/CreateCustomWorkoutContext";
+import CommicBubble from "../common/comic-bubble/ComicBubble";
 
-const ExerciseCard = ({exercise, onChange, exerciseIndex, workoutIndex, isOpened, openCardClick}) => {
-  const {workoutPlan, dispatch} = useContext(CreateCustomWorkoutPlanContext);
-  // const exercise = workoutPlan.workouts[workoutIndex].exercises[exerciseIndex];
-  const sets = exercise.sets
+const exercisesSearchResult = [
+  {
+    id: 2,
+    name: "Barbell Bench Press",
+    cover_photo:
+      "https://static.strengthlevel.com/images/illustrations/bench-press-1000x1000.jpg",
+    information:
+      "Primary worked muscles here are the chest, front delt and the triceps",
+    video_tutorial: "https://www.youtube.com/shorts/EdDqD4aKwxM",
+    tips: "Be carefull with the shoulders!",
+  },
+  {
+    id: 3,
+    name: "Pull Ups",
+    cover_photo:
+      "https://static.strengthlevel.com/images/illustrations/pull-ups-1000x1000.jpg",
+    information:
+      "Primary worked muscles here are the chest, front delt and the triceps",
+    video_tutorial: "https://www.youtube.com/shorts/EdDqD4aKwxM",
+    tips: "Be carefull with the shoulders!",
+  },
+];
+
+const ExerciseSearchPopUp = ({ onSelectExercise }) => {
+  return (
+    <div className="absolute z-10 w-full h-10 text-white">
+      <CommicBubble>
+        <div className="flex justify-between items-center border-b-2 border-white text-sm">
+          <p>Exercises</p>
+          <p>Your Exercises</p>
+        </div>
+        <div>
+          {exercisesSearchResult.map((exercise) => (
+            <article
+              key={exercise.id}
+              onClick={(e) => onSelectExercise(e, exercise)}
+              className="h-20 flex gap-2 cursor-pointer border-b-2 border-white px-1 py-2"
+            >
+              <div className="w-[40%] h-full">
+                <img
+                  className="w-full h-full object-contain"
+                  src={exercise.cover_photo}
+                  alt=""
+                />
+              </div>
+              <div>
+                <p className="text-sm">{exercise.name}</p>
+                <p className="text-xs text-gray-400">{exercise.information}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </CommicBubble>
+    </div>
+  );
+};
+
+const ExerciseCard = ({
+  exercise,
+  onChange,
+  exerciseIndex,
+  workoutIndex,
+  isOpened,
+  openCardClick,
+}) => {
+  const { workoutPlan, dispatch } = useContext(CreateCustomWorkoutPlanContext);
+  const [exerciseNameSearch, setExerciseNameSearch] = useState("");
+  const sets = exercise.sets;
+  function onSelectExercise(e, selectedExercise) {
+    dispatch({
+      type: "selectExercise",
+      payload: {
+        selectedExercise: selectedExercise,
+        workoutIndex: workoutIndex,
+        exerciseIndex: exerciseIndex,
+      },
+    });
+    setExerciseNameSearch('');
+  }
 
   function addSet() {
-    dispatch({type: 'addSetToExercise', payload: {workoutIndex: workoutIndex, exerciseIndex: exerciseIndex}});
-
+    dispatch({
+      type: "addSetToExercise",
+      payload: { workoutIndex: workoutIndex, exerciseIndex: exerciseIndex },
+    });
   }
   // function removeSet(e, index) {
   //   setSets((oldSets) => oldSets.filter((_, i) => i !== index));
   // }
 
   return (
-    <article onClick={openCardClick} className="flex flex-col items-center bg-light-grey rounded-t-2xl py-3 px-2 w-10/12 rounded overflow-auto">
+    <article
+      onClick={openCardClick}
+      className="flex flex-col items-center bg-light-grey rounded-t-2xl py-3 px-2 w-10/12 rounded overflow-auto"
+    >
       {/* Exercise name */}
-      <div className="w-full">
+      <div className="w-full relative">
         <Input
           labelText="Exercise Name"
           labelName="exerciseName"
           inputType="text"
-          value={exercise.name}
+          value={exerciseNameSearch ? exerciseNameSearch : exercise.name}
           isRequired={true}
-          // onChange={(e) => onChange(e, index)}
+          onChange={(e) => setExerciseNameSearch(e.target.value)}
         />
+        {exerciseNameSearch && (
+          <ExerciseSearchPopUp onSelectExercise={onSelectExercise} />
+        )}
       </div>
       {isOpened && (
         <>

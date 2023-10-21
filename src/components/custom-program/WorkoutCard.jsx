@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
-import {CreateCustomWorkoutPlanContext} from '../../contexts/CreateCustomWorkoutContext'
- 
+import { CreateCustomWorkoutPlanContext } from "../../contexts/CreateCustomWorkoutContext";
+
 import { HiPlusSm } from "react-icons/hi";
 
 import Input from "../common/input/Input";
@@ -17,16 +17,19 @@ const WorkoutCard = ({ arrayIndex, isOpened }) => {
   const exercises = currentWorkout.exercises;
   const [openedExercisesCardIndex, setOpenedExerciseCardIndex] = useState("");
   function onAddExercise() {
-    dispatch({type: 'addExerciseToWorkout', payload: arrayIndex})
+    dispatch({ type: "addExerciseToWorkout", payload: arrayIndex });
   }
 
   function openExerciseCard(e, index) {
     setOpenedExerciseCardIndex(index);
   }
 
-  function onChangeWorkoutName(e){
+  function onChangeWorkoutName(e) {
     e.preventDefault();
-    dispatch({type: 'changeWorkoutName', payload: {index: arrayIndex, name: e.target.value}});
+    dispatch({
+      type: "changeWorkoutName",
+      payload: { index: arrayIndex, name: e.target.value },
+    });
   }
 
   return (
@@ -34,27 +37,30 @@ const WorkoutCard = ({ arrayIndex, isOpened }) => {
       className="w-screen py-4 gap-3 flex flex-col justify-start items-center "
       key={`workout-${arrayIndex + 1}`}
     >
-      <Input
-        labelText={`Workout ${arrayIndex + 1}`}
-        labelName={`workout${arrayIndex + 1}`}
-        inputType="text"
-        value={currentWorkout.workoutName}
-        isRequired={true}
-        onChange={onChangeWorkoutName}
-        inputSize="xxl"
-      />
-
-      {exercises.map((exercise, index) => (
-        <ExerciseCard
-          // onChange={onChangeExercise}
-          exercise={exercise}
-          workoutIndex={arrayIndex}
-          index={index}
-          isOpened={index == openedExercisesCardIndex}
-          openCardClick={(e) => openExerciseCard(e, index)}
-          key={index}
+      <div className="min-h-[50px]">
+        <Input
+          labelText={`Workout ${arrayIndex + 1}`}
+          labelName={`workout${arrayIndex + 1}`}
+          inputType="text"
+          value={currentWorkout.workoutName}
+          isRequired={true}
+          onChange={onChangeWorkoutName}
+          inputSize="xxl"
         />
-      ))}
+      </div>
+      <div className="flex flex-col justify-center items-center gap-3 w-full">
+        {exercises.map((exercise, index) => (
+          <ExerciseCard
+            // onChange={onChangeExercise}
+            exercise={exercise}
+            workoutIndex={arrayIndex}
+            exerciseIndex={index}
+            isOpened={index == openedExercisesCardIndex}
+            openCardClick={(e) => openExerciseCard(e, index)}
+            key={index}
+          />
+        ))}
+      </div>
 
       <Button
         text="Exercise"
