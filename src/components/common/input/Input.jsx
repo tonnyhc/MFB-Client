@@ -4,13 +4,13 @@ function getInputSizeStyles(size) {
   switch (size) {
     case "xs":
       return "w-[60px] h-[50px]";
-    case 's':
-      return 'w-[90px] h-[50px]'
+    case "s":
+      return "w-[90px] h-[50px]";
     case "xxl":
       return "w-[250px] h-[50px]";
 
     default:
-      return 'w-full h-[50px]';
+      return "w-full h-[50px]";
   }
 }
 
@@ -22,17 +22,29 @@ const Input = ({
   value,
   isRequired,
   onChange,
+  onBlur,
   inputSize,
+  errorMessage,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState({
+    hasError: false,
+    errorMessage: errorMessage ? errorMessage : '',
+  });
   const handleFocus = () => {
     setIsFocused(true);
   };
 
-  const handleBlur = () => {
+  const handleBlur = (e) => {
     setIsFocused(value === "" ? false : true); // Only set to not focused if there's no input value
-    setError(value === "" && isRequired ? true : false);
+    const blurValidationError = onBlur(e);
+
+    setError((oldError) => ({
+      ...oldError,
+      hasError: value === "" && isRequired || blurValidationError !== "" ? true : false,
+      errorMessage: blurValidationError ? blurValidationError : oldError.errorMessage,
+    }));
+    
   };
 
   useEffect(() => {
@@ -49,20 +61,22 @@ const Input = ({
 
   return (
     <div
-      className={`relative ${inputSizeStyles} group ${isFocused || value ? "input-focused" : ""}`}
+      className={`relative ${inputSizeStyles} group ${
+        isFocused || value ? "input-focused" : ""
+      }`}
     >
       <label
         htmlFor={labelName}
         className={`  bg-grey transition-scale-all duration-300 absolute left-2  ${
           isFocused ? labelUpStyles : labelDownStyles
-        } ${error ? errorLabelStyles : "text-white"} `}
+        } ${error.hasError ? errorLabelStyles : "text-white"} `}
       >
-        {labelText}
+        {error.hasError ? error.errorMessage : labelText}
       </label>
       <input
         className={`w-full h-full border rounded-[10px] text-white  bg-grey-bg px-2 ${
           isFocused || value ? "border-white" : "border-gray-300"
-        } ${error ? errorInputStyles : ""}`}
+        } ${error.hasError ? errorInputStyles : ""}`}
         type={inputType}
         id={labelName}
         name={labelName}

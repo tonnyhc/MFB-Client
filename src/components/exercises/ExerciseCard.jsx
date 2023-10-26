@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState, useDeferredValue } from "react";
 
 import { HiPlusCircle, HiMinusCircle } from "react-icons/hi2";
 
@@ -6,6 +6,8 @@ import Button from "../common/button/Button";
 import Input from "../common/input/Input";
 import { CreateCustomWorkoutPlanContext } from "../../contexts/CreateCustomWorkoutContext";
 import CommicBubble from "../common/comic-bubble/ComicBubble";
+import { useQuery } from "react-query";
+import { exerciseSearch } from "../../services/exerciseServices";
 
 const exercisesSearchResult = [
   {
@@ -66,15 +68,30 @@ const ExerciseSearchPopUp = ({ onSelectExercise }) => {
 
 const ExerciseCard = ({
   exercise,
-  onChange,
   exerciseIndex,
   workoutIndex,
   isOpened,
   openCardClick,
 }) => {
-  const { workoutPlan, dispatch } = useContext(CreateCustomWorkoutPlanContext);
+  const { dispatch } = useContext(CreateCustomWorkoutPlanContext);
   const [exerciseNameSearch, setExerciseNameSearch] = useState("");
+  const defferedExerciseNameSearch = useDeferredValue(exerciseNameSearch);
   const sets = exercise.sets;
+
+  const {data, error, isLoading, refetch } = useQuery(['exercise', defferedExerciseNameSearch], () => exerciseSearch(defferedExerciseNameSearch));
+
+  useEffect(() => {
+    refetch();
+  }, [defferedExerciseNameSearch]);
+
+  if (isLoading){
+    console.log('is loading...');
+  };
+
+  if (error){
+    alert(error);
+  }
+ 
   function onSelectExercise(e, selectedExercise) {
     dispatch({
       type: "selectExercise",
@@ -86,7 +103,6 @@ const ExerciseCard = ({
     });
     setExerciseNameSearch('');
   }
-
   function addSet() {
     dispatch({
       type: "addSetToExercise",

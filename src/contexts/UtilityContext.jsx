@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 export const UtilityContext = createContext();
 
@@ -9,7 +10,10 @@ export const UtilityProvider = ({ children }) => {
     setIsMoreClicked((oldState) => !oldState);
   };
 
+  const {isAuthenticated, setIsAuthenticated} = useLocalStorage('userData');
+
   const context = {
+    isAuthenticated,
     onMoreClick,
     isMoreClicked,
   }
