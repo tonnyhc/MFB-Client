@@ -1,23 +1,22 @@
 import { useEffect, useState } from "react";
 
-function getInputSizeStyles(size) {
-  switch (size) {
-    case "xs":
-      return "w-[60px] h-[50px]";
-    case "s":
-      return "w-[90px] h-[50px]";
-    case "xxl":
-      return "w-[250px] h-[50px]";
+const inputSizeStylesObj = {
+  xs: "w-[60px] h-[50px]",
+  s: "w-[60px] h-[50px]",
+  xxl: "w-[250px] h-[50px]",
+  full : "w-full h-[50px]",
+}
 
-    default:
-      return "w-full h-[50px]";
-  }
+const inputStylesObj = {
+  transparent: 'bg-transparent border-b-2 border-white rounded-none',
+  regular: 'border rounded-[10px] bg-grey-bg'
 }
 
 const Input = ({
   labelText,
   labelName,
   inputType,
+  inputStyle,
   placeholder,
   value,
   isRequired,
@@ -26,6 +25,7 @@ const Input = ({
   inputSize,
   errorMessage,
 }) => {
+  
   const [isFocused, setIsFocused] = useState(false);
   const [error, setError] = useState({
     hasError: false,
@@ -37,12 +37,12 @@ const Input = ({
 
   const handleBlur = (e) => {
     setIsFocused(value === "" ? false : true); // Only set to not focused if there's no input value
-    const blurValidationError = onBlur(e);
+    const blurValidationError = onBlur ? onBlur(e) : null;
 
     setError((oldError) => ({
       ...oldError,
       hasError: value === "" && isRequired || blurValidationError !== "" ? true : false,
-      errorMessage: blurValidationError ? blurValidationError : oldError.errorMessage,
+      errorMessage: blurValidationError ? blurValidationError : oldError.errorMessage || `${labelText} is required!`,
     }));
     
   };
@@ -53,7 +53,9 @@ const Input = ({
     }
   }, []);
 
-  const inputSizeStyles = getInputSizeStyles(inputSize);
+  // const inputStyles = inputStyle ? inputStylesObj[inputStyle] : inputStylesObj['regular']
+  const inputStyles = 'bg-transparent border-b-[1px] pb-1 border-white rounded-none'
+  const inputSizeStyles = inputSize ? inputSizeStylesObj[inputSize] : inputSizeStylesObj['full'];
   const labelUpStyles = "top-0 scale-75 -translate-y-1.5";
   const labelDownStyles = "py-[14px] px-[6px]";
   const errorInputStyles = "border-red-600 text-red-400";
@@ -65,16 +67,16 @@ const Input = ({
         isFocused || value ? "input-focused" : ""
       }`}
     >
-      <label
+      {/* <label
         htmlFor={labelName}
         className={`  bg-grey transition-scale-all duration-300 absolute left-2  ${
           isFocused ? labelUpStyles : labelDownStyles
         } ${error.hasError ? errorLabelStyles : "text-white"} `}
       >
         {error.hasError ? error.errorMessage : labelText}
-      </label>
+      </label> */}
       <input
-        className={`w-full h-full border rounded-[10px] text-white  bg-grey-bg px-2 ${
+        className={`w-full h-full text-white px-2 ${inputStyles} ${
           isFocused || value ? "border-white" : "border-gray-300"
         } ${error.hasError ? errorInputStyles : ""}`}
         type={inputType}

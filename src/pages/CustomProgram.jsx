@@ -12,7 +12,7 @@ const CustomProgram = () => {
     CreateCustomWorkoutPlanContext
   );
 
-  const [programNameWorkoutsCount, setProgramNameWorkoutsCount] = useFormState({planName: "", workoutsCount: ''})
+  const [programNameWorkoutsCount,errors,  handleChange, handleBlur] = useFormState({planName: "", workoutsCount: ''})
 
   // This is the step we are on e.g first one is program name, and when the user clicks next
   // it is changed to the workouts part
@@ -37,7 +37,8 @@ const CustomProgram = () => {
       <div className="min-h-4/5 w-full">
         {currStep == 0 && (
           <ProgramNameForm
-            setFormData={setProgramNameWorkoutsCount}
+            handleChange={handleChange}
+            onBlur={handleBlur}
             formData={workoutPlan}
             step={currStep}
           />

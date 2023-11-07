@@ -1,11 +1,20 @@
-const requester = async (url, method, body) => {
-    // The server's url
+const requester = async (url, method, body, token) => {
+  // The server's url
   const hostUrl = "http://localhost:8000/";
+
+  if (!token) {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    token = userData ? userData.token : null;
+  }
+
+
   let options = {};
   options.method = method;
-  options.headers = {};
+  options.headers = {
+    'Authorization': `Token ${token}`
+  };
 
-//   Checking if the request has a body to apply a content type to it and to stringify the body to a JSON so it can be sent 
+  //   Checking if the request has a body to apply a content type to it and to stringify the body to a JSON so it can be sent
   if (body) {
     options.headers["Content-Type"] = "application/json";
     options.body = JSON.stringify(body);
@@ -18,7 +27,7 @@ const requester = async (url, method, body) => {
       return response;
     }
     if (!response.ok) {
-        // If the response is not OK (e.g has an error) to throw the error response
+      // If the response is not OK (e.g has an error) to throw the error response
       const data = await response.json();
       throw data;
     }

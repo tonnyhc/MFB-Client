@@ -8,15 +8,16 @@ export const UtilityProvider = ({ children }) => {
 
   function onMoreClick() {
     setIsMoreClicked((oldState) => !oldState);
-  };
-
-  const {isAuthenticated, setIsAuthenticated} = useLocalStorage('userData');
-
-  const context = {
-    isAuthenticated,
-    onMoreClick,
-    isMoreClicked,
   }
 
-  return <UtilityContext.Provider value={context}>{children}</UtilityContext.Provider>;
+  const context = {
+    onMoreClick,
+    isMoreClicked,
+  };
+
+  return (
+    <UtilityContext.Provider value={context}>
+      {children}
+    </UtilityContext.Provider>
+  );
 };

@@ -11,10 +11,9 @@ import ExerciseCard from "../exercises/ExerciseCard";
 
 const initialWorkoutState = { workoutName: "", exercises: [] };
 
-const WorkoutCard = ({ arrayIndex, isOpened }) => {
+const WorkoutCard = ({ workout, arrayIndex, isOpened }) => {
   const { workoutPlan, dispatch } = useContext(CreateCustomWorkoutPlanContext);
-  const currentWorkout = workoutPlan.workouts[arrayIndex];
-  const exercises = currentWorkout.exercises;
+  const exercises = workout.exercises;
   const [openedExercisesCardIndex, setOpenedExerciseCardIndex] = useState("");
   function onAddExercise() {
     dispatch({ type: "addExerciseToWorkout", payload: arrayIndex });
@@ -41,8 +40,10 @@ const WorkoutCard = ({ arrayIndex, isOpened }) => {
         <Input
           labelText={`Workout ${arrayIndex + 1}`}
           labelName={`workout${arrayIndex + 1}`}
+          placeholder={`Workout ${arrayIndex + 1}`}
           inputType="text"
-          value={currentWorkout.workoutName}
+          inputStyle='transparent'
+          value={workout.workoutName}
           isRequired={true}
           onChange={onChangeWorkoutName}
           inputSize="xxl"

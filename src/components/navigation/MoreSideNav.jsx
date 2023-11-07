@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 
-import {AiOutlinePlus} from 'react-icons/ai'
+import { AiOutlinePlus } from "react-icons/ai";
 import { PiBarbellDuotone } from "react-icons/pi";
+import { CiLogout } from "react-icons/ci";
 import styles from "./MoreSideNav.module.css";
 import { forwardRef } from "react";
+import { useContext } from "react";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const SideNavItem = ({ icon, text, path, onClick }) => {
   return (
@@ -19,8 +22,8 @@ const SideNavItem = ({ icon, text, path, onClick }) => {
   );
 };
 
-const MoreSideNav = forwardRef(function MoreSideNav(props,ref){
-  const {closeNav} ={...props}
+const MoreSideNav = forwardRef(function MoreSideNav(props, ref) {
+  const { closeNav } = { ...props };
   const navItems = [
     {
       icon: <PiBarbellDuotone />,
@@ -30,9 +33,12 @@ const MoreSideNav = forwardRef(function MoreSideNav(props,ref){
     {
       icon: <AiOutlinePlus />,
       text: "Create Custom Program",
-      path: 'program/create'
-    }
+      path: "program/create",
+    },
+    { icon: <CiLogout />, text: "Logout", path: "/logout" },
   ];
+
+  const {profileData} = useContext(ProfileContext)
 
   return (
     <div
@@ -49,13 +55,19 @@ const MoreSideNav = forwardRef(function MoreSideNav(props,ref){
             />
           </div>
           <div>
-            <p>Toni Petrov</p>
+            <p>{profileData.full_name}</p>
           </div>
         </div>
 
         <ul className="mt-5">
           {navItems.map((item, index) => (
-            <SideNavItem key={index} onClick={closeNav} icon={item.icon} text={item.text} path={item.path} />
+            <SideNavItem
+              key={index}
+              onClick={closeNav}
+              icon={item.icon}
+              text={item.text}
+              path={item.path}
+            />
           ))}
         </ul>
       </div>
@@ -63,4 +75,4 @@ const MoreSideNav = forwardRef(function MoreSideNav(props,ref){
   );
 });
 
-export default MoreSideNav
+export default MoreSideNav;

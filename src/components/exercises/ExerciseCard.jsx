@@ -89,7 +89,7 @@ const ExerciseCard = ({
   };
 
   if (error){
-    alert(error);
+    // alert(error);
   }
  
   function onSelectExercise(e, selectedExercise) {
@@ -143,7 +143,7 @@ const ExerciseCard = ({
                 <h3 className="text-xl">Set {index + 1}</h3>
                 <Button
                   text="Remove"
-                  color="grey"
+                  color="transparent"
                   // onClick={(e) => removeSet(e, index)}
                   id="removeSetBtn"
                   icon={<HiMinusCircle />}
@@ -155,6 +155,7 @@ const ExerciseCard = ({
               <div className="flex w-full">
                 <Input
                   labelText="Weight"
+                  placeholder="Weight"
                   labelName="weight"
                   inputType="number"
                   value={set.kg}
@@ -167,7 +168,7 @@ const ExerciseCard = ({
                   value={set.reps}
                   inputSize="s"
                 />
-                <div className="flex">
+                {/* <div className="flex"> */}
                   <Input
                     labelText="Min Reps"
                     labelName="minReps"
@@ -182,13 +183,13 @@ const ExerciseCard = ({
                     value={set.maxReps}
                     inputSize="s"
                   />
-                </div>
+                {/* </div> */}
               </div>
             </div>
           ))}
           <Button
             text="Add Set"
-            color="grey"
+            color="transparent"
             onClick={addSet}
             id="addSetBtn"
             icon={<HiPlusCircle />}

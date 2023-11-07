@@ -6,46 +6,52 @@ import { PiBarbell, PiBarbellFill } from "react-icons/pi";
 import { GoHomeFill, GoHome } from "react-icons/go";
 import MoreSideNav from "./MoreSideNav";
 import useClickOutside from "../../hooks/useClickOutside";
+import { useContext } from "react";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
+const navItems = [
+  {
+    path: "/",
+    activeIcon: <GoHomeFill className="fill-white" />,
+    icon: <GoHome className="text-nav-pills-collor" />,
+  },
+  {
+    path: "/workouts",
+    activeIcon: <PiBarbellFill className="fill-white" />,
+    icon: <PiBarbell className="text-nav-pills-collor" />,
+  },
+];
 function Navigation({ children }) {
   const location = useLocation();
   const isActiveLink = (path) => location.pathname === path;
   const [isMoreClicked, setIsMoreClicked] = useState(false);
+  const { profileData } = useContext(ProfileContext);
 
   function onMoreClick(e) {
     setIsMoreClicked(true);
   }
   const closeSideNav = () => {
     setIsMoreClicked(false);
-  }
+  };
 
   const moreSideNavRef = useRef(null);
   useClickOutside(moreSideNavRef, () => {
     closeSideNav();
   });
 
-
-
-  const navItems = [
-    {
-      path: "/",
-      activeIcon: <GoHomeFill className="fill-white" />,
-      icon: <GoHome className="text-nav-pills-collor" />,
-    },
-    {
-      path: "/workouts",
-      activeIcon: <PiBarbellFill className="fill-white" />,
-      icon: <PiBarbell className="text-nav-pills-collor" />,
-    },
-  ];
-
   return (
     <>
-      {isMoreClicked && <MoreSideNav closeNav={closeSideNav} ref={moreSideNavRef} />}
+      {isMoreClicked && (
+        <MoreSideNav closeNav={closeSideNav} ref={moreSideNavRef} />
+      )}
       <div className="fixed z-10 w-full text-white px-2 top-0 pb-[6px]">
         <div className="flex flex-row justify-between text-4xl h-12 items-center">
           <div onClick={onMoreClick}>
-            {<HiBars3 id='openMoreNavigation' style={{ color: "FFF" }} />}
+            {<HiBars3 id="openMoreNavigation" style={{ color: "FFF" }} />}
+          </div>
+          <div className="py-2 text-center">
+            <h2 className="text-base">Welcome Back {profileData.full_name}</h2>
+            <p className="text-gray-500 text-sm">Sore today, Strong tomorrow</p>
           </div>
           <div className="w-9 h-9 rounded-full overflow-hidden">
             <img
@@ -56,10 +62,10 @@ function Navigation({ children }) {
           </div>
         </div>
 
-        <div>
-          <h2 className="text-lg">Welcome Back Toni</h2>
+        {/* <div>
+          <h2 className="text-lg">Welcome Back {profileData.full_name}</h2>
           <p className="text-gray-500 text-sm">Sore today, Strong tomorrow</p>
-        </div>
+        </div> */}
       </div>
 
       {children}
@@ -70,7 +76,12 @@ function Navigation({ children }) {
       >
         {navItems.map((item, index) => (
           <li key={index}>
-            <NavLink className='text-nav-pils-color' onClick={closeSideNav} to={item.path} exact>
+            <NavLink
+              className="text-nav-pils-color"
+              onClick={closeSideNav}
+              to={item.path}
+              exact
+            >
               {isActiveLink(item.path) ? item.activeIcon : item.icon}
             </NavLink>
           </li>
@@ -78,6 +89,6 @@ function Navigation({ children }) {
       </ul>
     </>
   );
-};
+}
 
 export default Navigation;
