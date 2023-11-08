@@ -17,6 +17,7 @@ const Input = ({
   labelName,
   inputType,
   inputStyle,
+  fontSizePx,
   placeholder,
   value,
   isRequired,
@@ -79,6 +80,7 @@ const Input = ({
         className={`w-full h-full text-white px-2 ${inputStyles} ${
           isFocused || value ? "border-white" : "border-gray-300"
         } ${error.hasError ? errorInputStyles : ""}`}
+        style={{fontSize: fontSizePx}}
         type={inputType}
         id={labelName}
         name={labelName}

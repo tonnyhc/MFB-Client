@@ -9,6 +9,7 @@ body{
   height: 100vh;
   background-color: var(--primary-background-dark);
   overflow: hidden;
+  scroll-behavior: smooth;
 
 }
 

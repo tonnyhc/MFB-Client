@@ -42,7 +42,7 @@ function App() {
     return (
       <QueryClientProvider client={queryClient}>
         <Navigation>
-          <div className="h-[calc(100%-98px-50px)] mt-[96px] relative overflow-hidden ">
+          <div className="h-[calc(100%-98px-50px)] mt-[54px] relative overflow-hidden ">
             <CreateCustomWorkoutPlanProvider>
               <Routes>
                 {routes.auth.map((route, index) => (

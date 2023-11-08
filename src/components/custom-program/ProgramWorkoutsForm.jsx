@@ -58,7 +58,7 @@ const ProgramWorkoutsForm = () => {
           />
         </div>
       )}
-      <div
+      {/* <div
         className={`flex flex-wrap gap-1 w-9/10 justify-center items-center absolute bottom-0 right-1/2 translate-x-2/4`}
       >
         {workoutPlan.workouts.map((number, index) => (
@@ -69,7 +69,7 @@ const ProgramWorkoutsForm = () => {
             {index + 1}
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -33,8 +33,8 @@ const CustomProgram = () => {
   };
 
   return (
-    <div className="flex items-center h-full flex-col gap-5">
-      <div className="min-h-4/5 w-full">
+    <div className="flex items-center h-full flex-col gap-5 justify-between">
+      <div className="min-h-4/5 w-full flex-1">
         {currStep == 0 && (
           <ProgramNameForm
             handleChange={handleChange}

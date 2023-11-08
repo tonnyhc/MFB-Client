@@ -22,6 +22,8 @@ const actionHandlers = {
   selectExercise: handleSelectExercise,
   addSetToExercise: handleAddSetToExercise,
   removeSetFromExercise: handleRemoveSetFromExercise,
+  changeSetWeight: handleEditSetWeight,
+  changeSetReps: handleEditSetReps,
   default: handleDefault,
 };
 
@@ -181,6 +183,67 @@ function handleRemoveSetFromExercise(state, action) {
     ),
   };
 }
+
+function handleEditSetWeight(state, action){
+  const weight = action.payload.weight;
+  const workoutIndex = action.payload.workoutIndex;
+  const exerciseIndex = action.payload.exerciseIndex;
+  const setIndex = action.payload.setIndex;
+
+  const updateExerciseSetsArray = (exercise) => ({
+    ...exercise,
+    sets: exercise.sets.map((set, index) =>
+      index === setIndex ? { ...set, weight: weight } : set
+    ),
+  });
+
+  return {
+    ...state,
+    workouts: updateWorkoutExercises(
+      state.workouts,
+      workoutIndex,
+      (workout) => ({
+        ...workout,
+        exercises: updateArrayElement(
+          workout.exercises,
+          exerciseIndex,
+          updateExerciseSetsArray
+        ),
+      })
+    ),
+  };
+}
+
+function handleEditSetReps(state, action) {
+  const reps = action.payload.reps;
+  const workoutIndex = action.payload.workoutIndex;
+  const exerciseIndex = action.payload.exerciseIndex;
+  const setIndex = action.payload.setIndex;
+
+  const updateExerciseSetsArray = (exercise) => ({
+    ...exercise,
+    sets: exercise.sets.map((set, index) =>
+      index === setIndex ? { ...set, reps: reps } : set
+    ),
+  });
+
+  return {
+    ...state,
+    workouts: updateWorkoutExercises(
+      state.workouts,
+      workoutIndex,
+      (workout) => ({
+        ...workout,
+        exercises: updateArrayElement(
+          workout.exercises,
+          exerciseIndex,
+          updateExerciseSetsArray
+        ),
+      })
+    ),
+  };
+}
+
 
 function handleDefault(state) {
   return state;

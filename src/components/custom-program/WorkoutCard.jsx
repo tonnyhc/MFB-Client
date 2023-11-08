@@ -11,7 +11,7 @@ import ExerciseCard from "../exercises/ExerciseCard";
 
 const initialWorkoutState = { workoutName: "", exercises: [] };
 
-const WorkoutCard = ({ workout, arrayIndex, isOpened }) => {
+const WorkoutCard = ({ workout, arrayIndex }) => {
   const { workoutPlan, dispatch } = useContext(CreateCustomWorkoutPlanContext);
   const exercises = workout.exercises;
   const [openedExercisesCardIndex, setOpenedExerciseCardIndex] = useState("");
